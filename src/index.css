@@ -1,0 +1,114 @@
+/* 1. Fuente e Importaciones */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+@import "tailwindcss";
+
+/* 2. Configuración del Tema */
+@theme {
+  --font-brand: "Fredoka", sans-serif;
+  --radius: 1rem;
+
+  /* Mapeo de variables */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+/* 3. PALETA DE COLORES REFINADA (Suave y Agradable) */
+:root {
+  /* === FONDO GENERAL === */
+  /* En lugar de negro puro (#000), usamos un "Negro Jungla" muy suave */
+  --background: #0c0e0c;
+  /* Texto base: Blanco suave (no quema los ojos) */
+  --foreground: #f2fcf5;
+
+  /* === TARJETAS (El cambio más importante) === */
+  /* Usamos un gris oscuro con un TOQUE de verde (#141f16).
+     Esto da identidad de marca sin saturar la vista. */
+  --card: #141f16;
+  --card-foreground: #ffffff;
+
+  /* === PRIMARIO (Botones de Acción) === */
+  /* Verde CoCo Vibrante, pero equilibrado para que se lea bien el texto negro */
+  --primary: #4ade80;
+  /* Un verde esmeralda luminoso */
+  --primary-foreground: #022c22;
+  /* Texto verde muy oscuro (casi negro) para contraste perfecto */
+
+  /* === SECUNDARIO (Destacados/Precios) === */
+  /* Amarillo Mostaza suave */
+  --secondary: #fbbf24;
+  --secondary-foreground: #1a1a1a;
+
+  /* === BORDES Y SEPARADORES === */
+  /* Verde muy oscuro y sutil para dividir secciones sin marcar líneas duras */
+  --border: #1f3324;
+  --input: #1f3324;
+  --ring: #4ade80;
+
+  /* === TEXTOS SECUNDARIOS (Muted) === */
+  --muted: #1f3324;
+  --muted-foreground: #86efac;
+  /* Verde pastel suave para descripciones */
+
+  /* === INTERACCIÓN (Hover) === */
+  /* Un verde un poco más claro que la tarjeta para cuando pasas el mouse */
+  --accent: #1c2e20;
+  --accent-foreground: #4ade80;
+
+  /* === ALERTAS / BORRAR === */
+  --destructive: #ef4444;
+  /* Rojo suave */
+  --destructive-foreground: #ffffff;
+}
+
+/* 4. Estilos Globales */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-brand);
+    -webkit-font-smoothing: antialiased;
+    /* Suaviza las fuentes */
+  }
+
+  /* Scrollbar personalizado "Dark Forest" */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1f3324;
+    /* Color del borde */
+    border-radius: 5px;
+    border: 2px solid var(--background);
+    /* Crea un efecto flotante */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2d4a35;
+  }
+}
