@@ -29,8 +29,6 @@
             "@radix-ui/react-toggle": "^1.1.2",
             "@radix-ui/react-toggle-group": "^1.1.2",
             "@radix-ui/react-tooltip": "^1.1.8",
-            "@tailwindcss/vite": "^4.1.18",
-            "@types/file-saver": "^2.0.7",
             "class-variance-authority": "^0.7.1",
             "clsx": "*",
             "cmdk": "^1.1.1",
@@ -47,13 +45,15 @@
             "react-resizable-panels": "^2.1.7",
             "recharts": "^2.15.2",
             "sonner": "^2.0.3",
-            "tailwindcss": "^4.1.18",
             "vaul": "^1.1.2"
       },
       "devDependencies": {
+            "@tailwindcss/vite": "^4.1.18",
+            "@types/file-saver": "^2.0.7",
             "@types/node": "^20.10.0",
             "@types/react-dom": "^19.2.3",
             "@vitejs/plugin-react-swc": "^3.10.2",
+            "tailwindcss": "^4.1.18",
             "vite": "6.3.5"
       },
       "scripts": {
