@@ -1,7 +1,14 @@
 {
-      "name": "CoCo's burger app",
+      "name": "cocos-burger-app",
       "version": "0.1.0",
       "private": true,
+      "type": "module",
+      "scripts": {
+            "dev": "vite",
+            "build": "tsc -b && vite build",
+            "lint": "eslint .",
+            "preview": "vite preview"
+      },
       "dependencies": {
             "@radix-ui/react-accordion": "^1.2.3",
             "@radix-ui/react-alert-dialog": "^1.1.6",
@@ -30,34 +37,35 @@
             "@radix-ui/react-toggle-group": "^1.1.2",
             "@radix-ui/react-tooltip": "^1.1.8",
             "class-variance-authority": "^0.7.1",
-            "clsx": "*",
-            "cmdk": "^1.1.1",
-            "embla-carousel-react": "^8.6.0",
+            "clsx": "^2.1.1",
+            "tailwind-merge": "^2.5.2",
+            "cmdk": "^1.0.0",
+            "embla-carousel-react": "^8.3.0",
             "exceljs": "^4.4.0",
             "file-saver": "^2.0.5",
-            "input-otp": "^1.4.2",
-            "lucide-react": "^0.487.0",
-            "next-themes": "^0.4.6",
+            "input-otp": "^1.2.4",
+            "lucide-react": "^0.453.0",
+            "next-themes": "^0.3.0",
             "react": "^18.3.1",
             "react-day-picker": "^8.10.1",
             "react-dom": "^18.3.1",
-            "react-hook-form": "^7.55.0",
-            "react-resizable-panels": "^2.1.7",
-            "recharts": "^2.15.2",
-            "sonner": "^2.0.3",
-            "vaul": "^1.1.2"
+            "react-hook-form": "^7.53.0",
+            "react-resizable-panels": "^2.1.4",
+            "recharts": "^2.13.0",
+            "sonner": "^1.5.0",
+            "vaul": "^1.1.0"
       },
       "devDependencies": {
-            "@tailwindcss/vite": "^4.1.18",
+            "@tailwindcss/vite": "^4.0.0",
             "@types/file-saver": "^2.0.7",
-            "@types/node": "^20.10.0",
-            "@types/react-dom": "^19.2.3",
-            "@vitejs/plugin-react-swc": "^3.10.2",
-            "tailwindcss": "^4.1.18",
-            "vite": "6.3.5"
-      },
-      "scripts": {
-            "dev": "vite",
-            "build": "vite build"
+            "@types/node": "^22.7.5",
+            "@types/react": "^18.3.11",
+            "@types/react-dom": "^18.3.0",
+            "@vitejs/plugin-react-swc": "^3.5.0",
+            "autoprefixer": "^10.4.20",
+            "postcss": "^8.4.47",
+            "tailwindcss": "^4.0.0",
+            "typescript": "^5.6.3",
+            "vite": "^5.4.9"
       }
 }
