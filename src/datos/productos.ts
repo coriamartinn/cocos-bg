@@ -9,13 +9,42 @@ export const PRODUCTOS: Producto[] = [
   // Precio: Simple $5.000 / Doble $10.000
   {
     id: 'jr1',
-    nombre: 'Cheese Burger Jr',
+    nombre: 'Cheese Burger JR',
     categoria: 'hamburguesa',
     precio: 0,
     imagen: '🍔',
     descripcion: 'Medallón de 80g con cheddar. Incluye papas fritas.',
     tamaños: { simple: 5000, doble: 10000 }
   },
+  {
+    id: 'jr2',
+    nombre: 'Cheese & bacon JR',
+    categoria: 'hamburguesa',
+    precio: 0,
+    imagen: '🍔',
+    descripcion: 'Medallón de 80g con cheddar y bancon. Incluye papas fritas.',
+    tamaños: { simple: 5000, doble: 10000 }
+  },
+  {
+    id: 'jr3',
+    nombre: 'Cuarto de libra JR',
+    categoria: 'hamburguesa',
+    precio: 0,
+    imagen: '🍔',
+    descripcion: 'Medallón de 80g con cebolla caramelizada, cheddar y aderezos. Incluye papas fritas.',
+    tamaños: { simple: 5000, doble: 10000 }
+  },
+  {
+    id: 'jr4',
+    nombre: 'Whopper JR',
+    categoria: 'hamburguesa',
+    precio: 0,
+    imagen: '🍔',
+    descripcion: 'Medallón de 80g con lechuga, tomate y aderezos. Incluye papas fritas.',
+    tamaños: { simple: 5000, doble: 10000 }
+  },
+
+
 
   // ========== LÍNEA MAX (125g) ==========
   // Precio: Simple $6.500 / Doble $12.000
@@ -24,28 +53,38 @@ export const PRODUCTOS: Producto[] = [
     nombre: 'Cheese Burger MAX',
     categoria: 'hamburguesa',
     precio: 0,
-    imagen: '🔥',
+    imagen: '🍔',
     descripcion: 'Medallón de 125g con extra cheddar. Incluye papas fritas.',
     tamaños: { simple: 6500, doble: 12000 }
   },
   {
     id: 'max2',
-    nombre: 'Cuarto de Libra',
+    nombre: 'Cheese & Bacon MAX',
     categoria: 'hamburguesa',
     precio: 0,
-    imagen: '👑',
-    descripcion: '125g de carne, cebolla, ketchup y mostaza. Incluye papas fritas.',
+    imagen: '🍔',
+    descripcion: 'A la plancha con cheddar y bacon. Incluye papas fritas.',
     tamaños: { simple: 6500, doble: 12000 }
   },
   {
     id: 'max3',
-    nombre: 'Whopper 814',
+    nombre: 'Cuarto de Libra MAX',
     categoria: 'hamburguesa',
     precio: 0,
-    imagen: '🍅',
+    imagen: '🍔',
+    descripcion: '125g de carne, cebolla, ketchup y mostaza. Incluye papas fritas.',
+    tamaños: { simple: 6500, doble: 12000 }
+  },
+  {
+    id: 'max4',
+    nombre: 'Whopper MAX',
+    categoria: 'hamburguesa',
+    precio: 0,
+    imagen: '🍔',
     descripcion: 'A la parrilla con lechuga, tomate y mayonesa. Incluye papas fritas.',
     tamaños: { simple: 6500, doble: 12000 }
   },
+
 
   // ========== ACOMPAÑAMIENTOS ESPECIALES (Adicionales) ==========
   // Las papas comunes no están aquí porque vienen con la hamburguesa
