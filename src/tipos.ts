@@ -1,45 +1,39 @@
-// ============================================
-// DEFINICIÓN DE TIPOS DE DATOS
-// ============================================
+// Define las categorías válidas para los filtros
+export type Categoria = 'hamburguesa' | 'acompañamiento' | 'nuggets' | 'bebida';
 
 export interface Producto {
   id: string;
   nombre: string;
-  categoria: 'hamburguesa' | 'acompañamiento' | 'nuggets';
+  categoria: Categoria;
   precio: number;
-  imagen: string;
-  descripcion?: string; // <--- Agregado para detalles (ej: "Medallón 80g")
-  tamaños?: { simple: number; doble: number }; // Solo para hamburguesas
+  imagen: string; // Emoji o URL
+  descripcion?: string;
+  tamaños?: { simple: number; doble: number }; // Opcional, solo para burgers
 }
 
 export interface Modificador {
   nombre: string;
-  tipo: 'quitar' | 'agregar';
-  precio?: number; // Solo los extras tienen precio
+  tipo: 'agregar' | 'quitar';
+  precio?: number; // Si es 'agregar', suele tener precio
 }
 
 export interface ItemPedido {
-  id: string;
   producto: Producto;
-  tamaño?: 'simple' | 'doble'; // Solo para hamburguesas
-  modificadores: Modificador[];
   cantidad: number;
+  tamaño?: 'simple' | 'doble';
+  modificadores: Modificador[];
+  precioUnitario: number;
+  subtotal: number;
 }
 
-export interface PedidoCocina {
-  id: string;
-  numeroPedido: number;
+export interface Pedido {
+  id: string; // ID único interno (timestamp)
+  numeroPedido?: number; // Número visible (#1, #2, #3...)
+  cliente: string;
+  fecha: string; // Guardamos como string ISO para no romper JSON
   items: ItemPedido[];
-  estado: 'pendiente' | 'preparando' | 'listo';
-  fecha: Date;
-  minutosTranscurridos: number;
   total: number;
-}
-
-export interface Transaccion {
-  id: string;
-  numeroPedido: number;
-  total: number;
-  fecha: Date;
-  items: ItemPedido[];
+  estado: 'pendiente' | 'preparando' | 'listo' | 'entregado';
+  notas?: string; // Notas de cocina (ej: "Sin sal")
+  metodoPago?: 'efectivo' | 'tarjeta' | 'transferencia';
 }

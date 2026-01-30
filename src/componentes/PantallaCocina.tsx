@@ -1,141 +1,137 @@
-import { useState, useEffect } from 'react';
-import { PedidoCocina } from '../tipos';
-import { TarjetaPedidoCocina } from './TarjetaPedidoCocina';
-import { servicioAlmacenamiento } from './almacenamiento'; // IMPORTADO
+import { useEffect, useState } from 'react';
+import { CheckCircle, Clock, Trash2, AlertTriangle, ChefHat, ArrowRight } from 'lucide-react';
+import { Pedido } from '../tipos';
 
-export function PantallaCocina() {
-  const [pedidos, setPedidos] = useState<PedidoCocina[]>([]);
+interface PantallaCocinaProps {
+  pedidos: Pedido[];
+  completarPedido: (id: string) => void;
+  entregarPedido: (id: string) => void;
+  eliminarPedido: (id: string) => void;
+}
 
-  // ========== CARGA DE DATOS (POLLING) ==========
+export function PantallaCocina({ pedidos, completarPedido, entregarPedido, eliminarPedido }: PantallaCocinaProps) {
+  const [, setTick] = useState(0);
+
   useEffect(() => {
-    const cargarPedidos = () => {
-      const pedidosGuardados = servicioAlmacenamiento.obtenerPedidos();
-
-      // Actualizamos los minutos transcurridos en tiempo real
-      const ahora = new Date().getTime();
-      const pedidosActualizados = pedidosGuardados.map(p => {
-        const diffMs = ahora - new Date(p.fecha).getTime();
-        const minutos = Math.floor(diffMs / 60000); // Convertir ms a minutos
-        return { ...p, minutosTranscurridos: minutos };
-      });
-
-      setPedidos(pedidosActualizados);
-    };
-
-    // 1. Cargar inmediatamente
-    cargarPedidos();
-
-    // 2. Recargar cada 5 segundos para ver nuevos pedidos
-    const intervalo = setInterval(cargarPedidos, 5000);
-
-    return () => clearInterval(intervalo);
+    const timer = setInterval(() => setTick(t => t + 1), 60000);
+    return () => clearInterval(timer);
   }, []);
 
-  // ========== FUNCIONES ==========
+  const getMinutos = (fechaIso: string) => Math.floor((new Date().getTime() - new Date(fechaIso).getTime()) / 60000);
 
-  // Mover pedido a otro estado
-  const moverPedido = (pedidoId: string, nuevoEstado: PedidoCocina['estado']) => {
-    // Actualizar en BD local
-    servicioAlmacenamiento.actualizarEstado(pedidoId, nuevoEstado);
+  // Separamos los pedidos
+  const pendientes = pedidos.filter(p => p.estado !== 'listo');
+  const listos = pedidos.filter(p => p.estado === 'listo');
 
-    // Actualizar estado visual localmente (para feedback instantáneo)
-    setPedidos(pedidos.map(pedido =>
-      pedido.id === pedidoId ? { ...pedido, estado: nuevoEstado } : pedido
-    ));
-  };
-
-  // Obtener pedidos por estado
-  const obtenerPedidosPorEstado = (estado: PedidoCocina['estado']) => {
-    return pedidos.filter(pedido => pedido.estado === estado);
-  };
-
-  // ========== RENDERIZADO ==========
+  if (pedidos.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[60vh] text-gray-500 animate-in fade-in">
+        <ChefHat className="w-24 h-24 mb-4 opacity-20" />
+        <h2 className="text-2xl font-bold text-gray-400">Cocina al día</h2>
+        <p>Sin pedidos activos</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="h-[calc(100vh-73px)] p-6 overflow-hidden">
-      <div className="grid grid-cols-3 gap-6 h-full">
+    <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-120px)]">
+      
+      {/* === ZONA PRINCIPAL: PENDIENTES === */}
+      <div className="flex-1 overflow-y-auto pr-2 pb-20 lg:pb-0">
+        <h2 className="text-2xl font-bold text-white flex items-center gap-3 mb-4 sticky top-0 bg-neutral-900 z-10 py-2">
+          🔥 En Preparación 
+          <span className="bg-orange-600 text-white text-sm px-3 py-1 rounded-full">{pendientes.length}</span>
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {pendientes.length === 0 && (
+             <div className="col-span-full py-10 text-center text-gray-500 border-2 border-dashed border-neutral-700 rounded-xl">
+                 No hay nada en la parrilla...
+             </div>
+          )}
+          
+          {pendientes.map((pedido) => {
+            const minutos = getMinutos(pedido.fecha);
+            const esTarde = minutos > 15;
 
-        {/* Columna: Pendientes */}
-        <div className="flex flex-col">
-          <div className="bg-[#1F2937] rounded-t-lg p-4 border-2 border-yellow-500">
-            <h2 className="text-xl font-bold text-yellow-400 text-center flex items-center justify-center gap-2">
-              <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
-              Pendientes
-              <span className="bg-yellow-500 text-black rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold ml-2">
-                {obtenerPedidosPorEstado('pendiente').length}
-              </span>
-            </h2>
-          </div>
-          <div className="flex-1 bg-[#1F2937] bg-opacity-50 rounded-b-lg border-2 border-t-0 border-yellow-500 p-4 overflow-y-auto space-y-4">
-            {obtenerPedidosPorEstado('pendiente').map(pedido => (
-              <TarjetaPedidoCocina
-                key={pedido.id}
-                pedido={pedido}
-                alMover={moverPedido}
-              />
-            ))}
-            {obtenerPedidosPorEstado('pendiente').length === 0 && (
-              <div className="text-center text-gray-500 mt-12">
-                <p>No hay pedidos pendientes</p>
-              </div>
-            )}
-          </div>
-        </div>
+            return (
+              <div key={pedido.id} className={`flex flex-col bg-neutral-800 border rounded-xl overflow-hidden shadow-xl transition-all ${esTarde ? 'border-red-500/50 shadow-red-900/10' : 'border-neutral-700'}`}>
+                <div className={`p-3 flex justify-between items-center border-b ${esTarde ? 'bg-red-900/20 border-red-500/30' : 'bg-neutral-900/50 border-neutral-700'}`}>
+                  <div className="flex items-center gap-2">
+                    <span className="font-black text-xl text-white">#{pedido.numeroPedido}</span>
+                    {esTarde && <AlertTriangle className="text-red-500 animate-pulse" size={18} />}
+                  </div>
+                  <div className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-bold ${esTarde ? 'bg-red-500 text-white' : 'bg-neutral-700 text-gray-300'}`}>
+                    <Clock size={12} /> {minutos}m
+                  </div>
+                </div>
 
-        {/* Columna: En Preparación */}
-        <div className="flex flex-col">
-          <div className="bg-[#1F2937] rounded-t-lg p-4 border-2 border-orange-500">
-            <h2 className="text-xl font-bold text-orange-400 text-center flex items-center justify-center gap-2">
-              <span className="w-3 h-3 bg-orange-400 rounded-full"></span>
-              En Preparación
-              <span className="bg-orange-500 text-black rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold ml-2">
-                {obtenerPedidosPorEstado('preparando').length}
-              </span>
-            </h2>
-          </div>
-          <div className="flex-1 bg-[#1F2937] bg-opacity-50 rounded-b-lg border-2 border-t-0 border-orange-500 p-4 overflow-y-auto space-y-4">
-            {obtenerPedidosPorEstado('preparando').map(pedido => (
-              <TarjetaPedidoCocina
-                key={pedido.id}
-                pedido={pedido}
-                alMover={moverPedido}
-              />
-            ))}
-            {obtenerPedidosPorEstado('preparando').length === 0 && (
-              <div className="text-center text-gray-500 mt-12">
-                <p>No hay pedidos en preparación</p>
-              </div>
-            )}
-          </div>
-        </div>
+                <div className="p-3 space-y-2 flex-1">
+                    <p className="text-xs text-gray-400 uppercase font-bold">{pedido.cliente}</p>
+                    {pedido.items.map((item, idx) => (
+                    <div key={idx} className="flex gap-2 items-start text-sm">
+                        <span className="text-green-400 font-bold">{item.cantidad}x</span>
+                        <div className="flex-1">
+                            <span className="text-gray-200">{item.producto.nombre}</span>
+                            {item.tamaño && <span className="text-xs text-gray-500 ml-1">({item.tamaño})</span>}
+                            {item.modificadores.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-0.5">
+                                {item.modificadores.map((m, i) => (
+                                    <span key={i} className={`text-[10px] px-1 rounded ${m.tipo === 'quitar' ? 'text-red-400 line-through bg-red-900/20' : 'text-yellow-400 bg-yellow-900/20'}`}>
+                                    {m.nombre}
+                                    </span>
+                                ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    ))}
+                    {pedido.notas && <div className="text-xs text-yellow-500 italic bg-yellow-900/10 p-1 rounded border border-yellow-900/30">⚠️ {pedido.notas}</div>}
+                </div>
 
-        {/* Columna: Listos */}
-        <div className="flex flex-col">
-          <div className="bg-[#1F2937] rounded-t-lg p-4 border-2 border-green-500">
-            <h2 className="text-xl font-bold text-green-400 text-center flex items-center justify-center gap-2">
-              <span className="w-3 h-3 bg-green-400 rounded-full"></span>
-              Listos
-              <span className="bg-green-500 text-black rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold ml-2">
-                {obtenerPedidosPorEstado('listo').length}
-              </span>
-            </h2>
-          </div>
-          <div className="flex-1 bg-[#1F2937] bg-opacity-50 rounded-b-lg border-2 border-t-0 border-green-500 p-4 overflow-y-auto space-y-4">
-            {obtenerPedidosPorEstado('listo').map(pedido => (
-              <TarjetaPedidoCocina
-                key={pedido.id}
-                pedido={pedido}
-                alMover={moverPedido}
-              />
-            ))}
-            {obtenerPedidosPorEstado('listo').length === 0 && (
-              <div className="text-center text-gray-500 mt-12">
-                <p>No hay pedidos listos</p>
+                <div className="p-2 bg-neutral-900/30 border-t border-neutral-700 flex gap-2">
+                  <button onClick={() => eliminarPedido(pedido.id)} className="p-2 rounded bg-red-900/20 text-red-500 hover:bg-red-500 hover:text-white transition-colors"><Trash2 size={18} /></button>
+                  <button onClick={() => completarPedido(pedido.id)} className="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded flex items-center justify-center gap-2 text-sm transition-all shadow-lg shadow-green-900/20">
+                    <CheckCircle size={18} /> LISTO
+                  </button>
+                </div>
               </div>
-            )}
-          </div>
+            );
+          })}
         </div>
       </div>
+
+      {/* === ZONA LATERAL: LISTOS (HISTORIAL) === */}
+      <div className="w-full lg:w-80 bg-neutral-800/50 border-t lg:border-t-0 lg:border-l border-neutral-700 p-4 overflow-y-auto">
+        <h2 className="text-xl font-bold text-gray-300 flex items-center gap-2 mb-4 sticky top-0">
+          ✅ Listos para Entrega
+          <span className="bg-green-900 text-green-400 text-xs px-2 py-0.5 rounded-full border border-green-700">{listos.length}</span>
+        </h2>
+        
+        <div className="space-y-3">
+          {listos.length === 0 && (
+             <p className="text-sm text-gray-600 italic text-center py-4">No hay pedidos esperando entrega.</p>
+          )}
+
+          {listos.map((pedido) => (
+            <div key={pedido.id} className="bg-neutral-900 border border-green-900/50 rounded-lg p-3 opacity-80 hover:opacity-100 transition-opacity">
+               <div className="flex justify-between items-center mb-2">
+                   <span className="font-bold text-lg text-white line-through decoration-green-500 decoration-2">#{pedido.numeroPedido}</span>
+                   <span className="text-xs text-gray-500">{new Date(pedido.fecha).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+               </div>
+               <p className="text-xs text-gray-400 mb-2 truncate">{pedido.cliente}</p>
+               
+               <button 
+                onClick={() => entregarPedido(pedido.id)}
+                className="w-full bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-gray-300 hover:text-white text-xs font-bold py-2 rounded flex items-center justify-center gap-2 transition-colors"
+               >
+                 Entregado <ArrowRight size={12}/>
+               </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 }

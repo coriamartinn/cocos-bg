@@ -1,69 +1,58 @@
-import { PedidoCocina } from '../tipos.ts';
+import { Pedido } from '../tipos';
 
-const CLAVE_PEDIDOS = '814burgers_pedidos';
-const CLAVE_FECHA = '814burgers_fecha_sistema';
-const CLAVE_CONTADOR = '814burgers_contador_pedidos'; // Nuevo: guarda el último número
+// Claves para guardar en el navegador
+const CLAVE_PEDIDOS = 'cocos_pedidos_data';
+const CLAVE_CONTADOR = 'cocos_contador_dia';
+const CLAVE_FECHA = 'cocos_fecha_sistema';
 
+// Función auxiliar para saber la fecha de hoy (DD/MM/AAAA)
 const obtenerFechaHoy = () => new Date().toLocaleDateString('es-AR');
 
 export const servicioAlmacenamiento = {
-    // Inicializar y verificar si cambió el día (automático)
-    inicializar: () => {
-        const fechaGuardada = localStorage.getItem(CLAVE_FECHA);
-        const fechaHoy = obtenerFechaHoy();
 
-        if (fechaGuardada !== fechaHoy) {
-            console.log('🧹 Nuevo día detectado. Limpiando sistema...');
-            servicioAlmacenamiento.cerrarDia(false); // Reinicio automático sin reporte
-            localStorage.setItem(CLAVE_FECHA, fechaHoy);
+    // 1. Validar si es un nuevo día (Reset automático)
+    validarSesion: () => {
+        const ultimaFecha = localStorage.getItem(CLAVE_FECHA);
+        const hoy = obtenerFechaHoy();
+
+        // Si la fecha guardada es distinta a hoy, borramos todo
+        if (ultimaFecha !== hoy) {
+            console.log("🧹 Nuevo día detectado: Reiniciando contador y pedidos...");
+            localStorage.removeItem(CLAVE_PEDIDOS);
+            localStorage.setItem(CLAVE_CONTADOR, '0');
+            localStorage.setItem(CLAVE_FECHA, hoy);
         }
-
-        return JSON.parse(localStorage.getItem(CLAVE_PEDIDOS) || '[]');
     },
 
-    // Obtener pedidos
-    obtenerPedidos: (): PedidoCocina[] => {
-        servicioAlmacenamiento.inicializar();
-        const pedidosJson = localStorage.getItem(CLAVE_PEDIDOS);
-        const pedidos = JSON.parse(pedidosJson || '[]');
-        return pedidos.map((p: any) => ({ ...p, fecha: new Date(p.fecha) }));
+    // 2. Cargar pedidos al iniciar la App
+    obtenerPedidos: (): Pedido[] => {
+        servicioAlmacenamiento.validarSesion(); // Primero chequeamos la fecha
+        try {
+            const data = localStorage.getItem(CLAVE_PEDIDOS);
+            return data ? JSON.parse(data) : [];
+        } catch (error) {
+            console.error("Error leyendo pedidos", error);
+            return [];
+        }
     },
 
-    // Obtener el siguiente número de pedido (1, 2, 3...)
+    // 3. Guardar la lista completa (Se llama cada vez que agregas/borras algo)
+    guardarPedidos: (pedidos: Pedido[]) => {
+        localStorage.setItem(CLAVE_PEDIDOS, JSON.stringify(pedidos));
+    },
+
+    // 4. Obtener el número para el ticket (#1, #2...)
     obtenerSiguienteNumero: (): number => {
         const actual = parseInt(localStorage.getItem(CLAVE_CONTADOR) || '0');
-        return actual + 1;
+        const siguiente = actual + 1;
+        localStorage.setItem(CLAVE_CONTADOR, siguiente.toString());
+        return siguiente;
     },
 
-    // Guardar pedido (ahora recibe el pedido y le asigna el número correcto)
-    guardarPedido: (nuevoPedido: PedidoCocina) => {
-        const pedidos = servicioAlmacenamiento.obtenerPedidos();
-
-        // Asignar número secuencial y guardar contador
-        const numeroSecuencial = servicioAlmacenamiento.obtenerSiguienteNumero();
-        nuevoPedido.numeroPedido = numeroSecuencial;
-        localStorage.setItem(CLAVE_CONTADOR, numeroSecuencial.toString());
-
-        pedidos.push(nuevoPedido);
-        localStorage.setItem(CLAVE_PEDIDOS, JSON.stringify(pedidos));
-
-        return numeroSecuencial; // Retornamos el número para mostrarlo en el alert
-    },
-
-    actualizarEstado: (idPedido: string, nuevoEstado: PedidoCocina['estado']) => {
-        const pedidos = servicioAlmacenamiento.obtenerPedidos();
-        const pedidosActualizados = pedidos.map(p =>
-            p.id === idPedido ? { ...p, estado: nuevoEstado } : p
-        );
-        localStorage.setItem(CLAVE_PEDIDOS, JSON.stringify(pedidosActualizados));
-    },
-
-    // Función Manual para Cerrar el Día
-    cerrarDia: (forzarBorrado: boolean = true) => {
-        if (forzarBorrado) {
-            localStorage.removeItem(CLAVE_PEDIDOS);
-            localStorage.setItem(CLAVE_CONTADOR, '0'); // Reiniciamos contador a 0
-            localStorage.setItem(CLAVE_FECHA, obtenerFechaHoy()); // Actualizamos fecha
-        }
+    // 5. Cierre de Caja Manual (Exportar Excel y borrar)
+    limpiarTodo: () => {
+        localStorage.removeItem(CLAVE_PEDIDOS);
+        localStorage.setItem(CLAVE_CONTADOR, '0');
+        localStorage.setItem(CLAVE_FECHA, obtenerFechaHoy());
     }
 };
