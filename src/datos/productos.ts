@@ -14,9 +14,9 @@ export const PRODUCTOS: Producto[] = [
     precio: 0,
     imagen: '🍔',
     descripcion: 'Medallón de 80g con cheddar. Incluye papas fritas.',
-    tamaños: { simple: 5000, doble: 10000 }
+    tamaños: { simple: 6000, doble: 10000 }
   },
-  {
+  /*{
     id: 'jr2',
     nombre: 'Cheese & bacon JR',
     categoria: 'hamburguesa',
@@ -24,7 +24,7 @@ export const PRODUCTOS: Producto[] = [
     imagen: '🍔',
     descripcion: 'Medallón de 80g con cheddar y bancon. Incluye papas fritas.',
     tamaños: { simple: 5000, doble: 10000 }
-  },
+  },*/
   {
     id: 'jr3',
     nombre: 'Cuarto de libra JR',
@@ -32,16 +32,16 @@ export const PRODUCTOS: Producto[] = [
     precio: 0,
     imagen: '🍔',
     descripcion: 'Medallón de 80g con cebolla caramelizada, cheddar y aderezos. Incluye papas fritas.',
-    tamaños: { simple: 5000, doble: 10000 }
+    tamaños: { simple: 6500, doble: 12000 }
   },
   {
     id: 'jr4',
-    nombre: 'Whopper JR',
+    nombre: 'Clasica JR',
     categoria: 'hamburguesa',
     precio: 0,
     imagen: '🍔',
     descripcion: 'Medallón de 80g con lechuga, tomate y aderezos. Incluye papas fritas.',
-    tamaños: { simple: 5000, doble: 10000 }
+    tamaños: { simple: 6500, doble: 12000 }
   },
 
 
@@ -55,9 +55,9 @@ export const PRODUCTOS: Producto[] = [
     precio: 0,
     imagen: '🍔',
     descripcion: 'Medallón de 125g con extra cheddar. Incluye papas fritas.',
-    tamaños: { simple: 6500, doble: 12000 }
+    tamaños: { simple: 8000, doble: 14000 }
   },
-  {
+  /*{
     id: 'max2',
     nombre: 'Cheese & Bacon MAX',
     categoria: 'hamburguesa',
@@ -65,7 +65,7 @@ export const PRODUCTOS: Producto[] = [
     imagen: '🍔',
     descripcion: 'A la plancha con cheddar y bacon. Incluye papas fritas.',
     tamaños: { simple: 6500, doble: 12000 }
-  },
+  },*/
   {
     id: 'max3',
     nombre: 'Cuarto de Libra MAX',
@@ -73,16 +73,16 @@ export const PRODUCTOS: Producto[] = [
     precio: 0,
     imagen: '🍔',
     descripcion: '125g de carne, cebolla, ketchup y mostaza. Incluye papas fritas.',
-    tamaños: { simple: 6500, doble: 12000 }
+    tamaños: { simple: 8500, doble: 15500 }
   },
   {
     id: 'max4',
-    nombre: 'Whopper MAX',
+    nombre: 'Clasica MAX',
     categoria: 'hamburguesa',
     precio: 0,
     imagen: '🍔',
     descripcion: 'A la parrilla con lechuga, tomate y mayonesa. Incluye papas fritas.',
-    tamaños: { simple: 6500, doble: 12000 }
+    tamaños: { simple: 8500, doble: 15500 }
   },
 
 
