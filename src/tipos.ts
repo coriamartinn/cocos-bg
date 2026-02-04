@@ -35,5 +35,5 @@ export interface Pedido {
   total: number;
   estado: 'pendiente' | 'preparando' | 'listo' | 'entregado';
   notas?: string; // Notas de cocina (ej: "Sin sal")
-  metodoPago?: 'efectivo' | 'tarjeta' | 'transferencia';
+  metodoPago?: 'efectivo' | 'transferencia';
 }
