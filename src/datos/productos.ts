@@ -94,7 +94,7 @@ export const PRODUCTOS: Producto[] = [
     nombre: 'Cheese burger PROMO',
     categoria: 'promos',
     precio: 10000,
-    imagen: '🧀',
+    imagen: '🎉',
     descripcion: 'Promo 2 hamburguesas cheese burger con papas.'
   },
   {
@@ -102,7 +102,7 @@ export const PRODUCTOS: Producto[] = [
     nombre: 'Cuarto COCOS PROMO',
     categoria: 'promos',
     precio: 20000,
-    imagen: '🧀',
+    imagen: '🎉',
     descripcion: 'Promo 2 hamburguesas cuarto de libra con papas.'
   },
   {
@@ -110,7 +110,7 @@ export const PRODUCTOS: Producto[] = [
     nombre: 'Clasica COCOS PROMO',
     categoria: 'promos',
     precio: 10000,
-    imagen: '🧀',
+    imagen: '🎉',
     descripcion: 'Promo 2 hamburguesas clasicas con lechuga, tomate y aderezo + papas.'
   },
 
