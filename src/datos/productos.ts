@@ -86,8 +86,38 @@ export const PRODUCTOS: Producto[] = [
   },
 
 
+  // ========== PROMOS (Adicionales) ==========
+  // TODAS LAS PROMOS O COMBOS QUE VAMOS COMPARTIENDO
+
+  {
+    id: 'p1',
+    nombre: 'Cheese burger PROMO',
+    categoria: 'promos',
+    precio: 10000,
+    imagen: '🧀',
+    descripcion: 'Promo 2 hamburguesas cheese burger con papas.'
+  },
+  {
+    id: 'p2',
+    nombre: 'Cuarto COCOS PROMO',
+    categoria: 'promos',
+    precio: 20000,
+    imagen: '🧀',
+    descripcion: 'Promo 2 hamburguesas cuarto de libra con papas.'
+  },
+  {
+    id: 'p3',
+    nombre: 'Clasica COCOS PROMO',
+    categoria: 'promos',
+    precio: 10000,
+    imagen: '🧀',
+    descripcion: 'Promo 2 hamburguesas clasicas con lechuga, tomate y aderezo + papas.'
+  },
+
+
   // ========== ACOMPAÑAMIENTOS ESPECIALES (Adicionales) ==========
   // Las papas comunes no están aquí porque vienen con la hamburguesa
+
   {
     id: 's2',
     nombre: 'Papas con Cheddar',

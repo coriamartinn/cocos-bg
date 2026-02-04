@@ -1,5 +1,5 @@
 // Define las categorías válidas para los filtros
-export type Categoria = 'hamburguesa' | 'acompañamiento' | 'nuggets' | 'bebida';
+export type Categoria = 'hamburguesa' | 'acompañamiento' | 'nuggets' | 'bebida' | 'promos';
 
 export interface Producto {
   id: string;
